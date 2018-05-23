@@ -1,15 +1,18 @@
-from classes import Player
+import statistics
 
-class One(Player):
-    pass
+def take_one(*args):
+    return 1
 
-class Duo(Player):
-    pass
+def take_two(*args):
+    return 2
 
-class Three(Player):
-    pass
+def take_three(*args):
+    return 3
 
-class Four(Player):
-    pass
+def tit_for_tat(turn, round, fish, results, state):
+    if results:
+        return statistics.mode(list(results[-1].values()))
+    else:
+        return 1
 
-players = [One.inst(), Duo.inst(), Three.inst(), Four.inst()]
+players = [take_one, take_two, take_three, tit_for_tat]
