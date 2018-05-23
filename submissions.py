@@ -33,4 +33,10 @@ def minimum_high_random(turn, round, fish, results, state):
     else:
         return random.choice([1,2,2,3,3,3])
 
-players = [take_one, take_two, take_three, tit_for_tat, random_strategy, low_random, high_random, minimum_high_random]
+def exploit_meek(turn, round, fish, results, state):
+    if results:
+        return 4 - statistics.mode(list(results[-1].values()))
+    else:
+        return 3
+
+players = [take_one, take_two, take_three, tit_for_tat, random_strategy, low_random, high_random, minimum_high_random, exploit_meek]
