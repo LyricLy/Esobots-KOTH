@@ -4,9 +4,21 @@
 import constants
 import submissions
 import random
+import itertools
 from collections import Counter
 
 def run_game(players):
+    scores = {x: 0 for x in players}
+    iterations = [itertools.permutations(players, i) for i in range(2, len(players))]
+    fullIterator = itertools.chain(*iterations)
+    for playerSet in fullIterator:
+        delta_scores = run_game_one_permutation(list(playerSet))
+        for k, v in delta_scores.items():
+            scores[k] = (scores[k] + v)
+    return scores
+
+        
+def run_game_one_permutation(players):
     fish = int(len(players) * constants.FISH_MULTIPLIER)
     states = {x: {} for x in players}
     scores = {x: 0 for x in players}
