@@ -1,4 +1,5 @@
 import statistics
+import random
 
 def take_one(*args):
     return 1
@@ -15,4 +16,13 @@ def tit_for_tat(turn, round, fish, results, state):
     else:
         return 1
 
-players = [take_one, take_two, take_three, tit_for_tat]
+def random_strategy(*args):
+    return random.choice([1,2,3])
+    
+def low_random(*args):
+    return random.choice([1,1,1,2,2,3])
+
+def high_random(*args):
+    return random.choice([1,2,2,3,3,3])
+
+players = [take_one, take_two, take_three, tit_for_tat, random_strategy, low_random, high_random]
