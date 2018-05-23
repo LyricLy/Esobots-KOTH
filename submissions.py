@@ -39,4 +39,8 @@ def exploit_meek(turn, round, fish, results, state):
     else:
         return 3
 
+def human_player(*args): 
+    print(args)
+    return int(input())
+
 players = [take_one, take_two, take_three, tit_for_tat, random_strategy, low_random, high_random, minimum_high_random, exploit_meek]
