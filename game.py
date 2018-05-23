@@ -68,5 +68,5 @@ if __name__ == "__main__":
     for _ in range(constants.RUNS):
         scores = dict(Counter(scores) + Counter(run_game(submissions.players.copy())))
     #print(scores)
-    for f, s in scores.items():
-         print(f"{f.__name__} scored {s}")
+    for k in sorted(scores, key=scores.get, reverse=True):
+         print(f"{k.__name__} scored {scores[k]}")
