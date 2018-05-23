@@ -6,12 +6,6 @@ import submissions
 import random
 from collections import Counter
 
-def counter():
-    i = constants.STARTING_NEED
-    while True:
-        yield i
-        i += 1
-
 def run_game(players):
     fish = int(len(players) * constants.FISH_MULTIPLIER)
     states = {x: {} for x in players}
@@ -64,9 +58,10 @@ def run_game(players):
     return scores
 
 if __name__ == "__main__":
-    scores = {x: 0 for x in submissions.players}
+    scores = {x.__name__: 0 for x in submissions.players}
     for _ in range(constants.RUNS):
-        scores = dict(Counter(scores) + Counter(run_game(submissions.players.copy())))
+        delta_scores = run_game(submissions.players.copy())
+        scores = {k.__name__: (scores[k.__name__] + v) for k, v in delta_scores.items()}
     # print(scores)
     for k in sorted(scores, key=scores.get, reverse=True):
-         print(f"{k.__name__} scored {scores[k]}")
+         print(f"{k} scored {scores[k]}")
