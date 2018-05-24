@@ -1,4 +1,3 @@
-import statistics
 import random
 
 try:
@@ -17,7 +16,8 @@ def take_three(*args):
 
 def tit_for_tat(turn, round, fish, results, state):
     if results:
-        return statistics.mode(list(results[-1].values()))
+        values = list(results[-1].values())
+        return max(set(values), key=values.count)
     else:
         return 1
 
@@ -40,7 +40,8 @@ def minimum_high_random(turn, round, fish, results, state):
 
 def exploit_meek(turn, round, fish, results, state):
     if results:
-        return 4 - statistics.mode(list(results[-1].values()))
+        values = list(results[-1].values())
+        return 4 - max(set(values), key=values.count)
     else:
         return 3
 
