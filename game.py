@@ -28,13 +28,14 @@ def run_game(players):
     return scores
 
 def run_permutation(players):
-    fish = int(len(players) * constants.FISH_MULTIPLIER)
+    fish_start = int(len(players) * constants.FISH_MULTIPLIER)
     states = {x: {} for x in players}
     scores = {x: 0 for x in players}
     for i in range(constants.STARTING_NEED, constants.ROUND_LIMIT):
         round_results = []
         turn = 1
         fish_eaten = {x: 0 for x in players}
+        fish = fish_start
         while fish:
             turn_results = {x: 0 for x in players}
             requests = {}
