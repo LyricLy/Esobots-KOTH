@@ -4,26 +4,34 @@
 import constants
 import submissions
 import random
-import itertools
-from collections import Counter
+
+def add_dicts(original, delta):
+    return {k: (v + delta[k]) if k in delta else v for k, v in original.items()}
 
 def run_game(players):
-#    scores = {x: 0 for x in players}
-#    iterations = [itertools.permutations(players, i) for i in range(2, len(players))]
-#    fullIterator = itertools.chain(*iterations)
-#    for playerSet in fullIterator:
-#        delta_scores = run_game_one_permutation(list(playerSet))
-#        for k, v in delta_scores.items():
-#            scores[k] = (scores[k] + v)
-#    return scores
-    return run_game_one_permutation(players)
+    scores = {x: 0 for x in players}
+    for _ in range(constants.RUNS):
+        if constants.GROUP_SIZE:
+            # randomly group into groups of constants.GROUP_SIZE
+            random.shuffle(players)
+            groups = [players[x:x+constants.GROUP_SIZE]
+                     if len(players) > x+constants.GROUP_SIZE
+                     else players[x:]
+                     for x in 
+                     range(0, len(players), constants.GROUP_SIZE)]
+            for group in groups:
+                delta_scores = run_permutation(group.copy())
+                scores = add_dicts(scores, delta_scores)
+        else:
+            delta_scores = run_permutation(players.copy())
+            scores = add_dicts(scores, delta_scores)
+    return scores
 
-        
-def run_game_one_permutation(players):
+def run_permutation(players):
     fish = int(len(players) * constants.FISH_MULTIPLIER)
     states = {x: {} for x in players}
     scores = {x: 0 for x in players}
-    for i in range(1, constants.ROUND_LIMIT):
+    for i in range(constants.STARTING_NEED, constants.ROUND_LIMIT):
         round_results = []
         turn = 1
         fish_eaten = {x: 0 for x in players}
@@ -33,12 +41,14 @@ def run_game_one_permutation(players):
             random.shuffle(players)
             for player in players:
                 requests[player] = player(turn, i, fish, round_results, states[player])
+                if requests[player] > 3:
+                    raise Exception("function requested more than three fish")
 
             while requests:
                 new_requests = requests.copy()
                 for request in requests:
                     if requests[request] and fish:
-                        requests[request] -= 1
+                        new_requests[request] -= 1
                         fish -= 1
                         turn_results[request] += 1
                         fish_eaten[request] += 1
@@ -71,10 +81,6 @@ def run_game_one_permutation(players):
     return scores
 
 if __name__ == "__main__":
-    scores = {x.__name__: 0 for x in submissions.players}
-    for _ in range(constants.RUNS):
-        delta_scores = run_game(submissions.players.copy())
-        scores = {k.__name__: (scores[k.__name__] + v) for k, v in delta_scores.items()}
-    # print(scores)
+    scores = run_game(submissions.players)
     for k in sorted(scores, key=scores.get, reverse=True):
-         print(f"{k} scored {scores[k]}")
+         print(f"{k.__name__} scored {scores[k]}")
