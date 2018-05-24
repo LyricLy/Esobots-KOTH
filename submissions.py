@@ -14,7 +14,7 @@ def take_two(*args):
 def take_three(*args):
     return 3
 
-def tit_for_tat(turn, round, fish, results, state):
+def tit_for_tat(turn, round, fish, player_count, remaining_need, results, state):
     if results:
         values = list(results[-1].values())
         return max(set(values), key=values.count)
@@ -30,7 +30,7 @@ def low_random(*args):
 def high_random(*args):
     return random.choice([1,2,2,3,3,3])
 
-def minimum_high_random(turn, round, fish, results, state):
+def minimum_high_random(turn, round, fish, player_count, remaining_need, results, state):
     if round == 1:
         return 1
     elif round == 2:
@@ -38,15 +38,15 @@ def minimum_high_random(turn, round, fish, results, state):
     else:
         return random.choice([1,2,2,3,3,3])
 
-def exploit_meek(turn, round, fish, results, state):
+def exploit_meek(turn, round, fish, player_count, remaining_need, results, state):
     if results:
         values = list(results[-1].values())
         return 4 - max(set(values), key=values.count)
     else:
         return 3
 
-def human_player(turn, round, fish, results, state):
-    print(f"turn {turn}, round {round}, {fish} fish")
+def human_player(turn, round, fish, player_count, remaining_need, results, state):
+    print(f"turn {turn}, round {round}, {fish} fish, {remaining_need} more fish needed, {player_count} players")
     print("======")
     if pandas:
         pretty_results = [{k.__name__: x[k] for k in x} for x in results]

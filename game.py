@@ -31,7 +31,7 @@ def run_permutation(players):
     fish_start = int(len(players) * constants.FISH_MULTIPLIER)
     states = {x: {} for x in players}
     scores = {x: 0 for x in players}
-    for i in range(constants.STARTING_NEED, constants.ROUND_LIMIT):
+    for round in range(constants.STARTING_NEED, constants.ROUND_LIMIT):
         round_results = []
         turn = 1
         fish_eaten = {x: 0 for x in players}
@@ -41,7 +41,13 @@ def run_permutation(players):
             requests = {}
             random.shuffle(players)
             for player in players:
-                requests[player] = player(turn, i, fish, round_results, states[player])
+                requests[player] = player(turn, 
+                                          round,
+                                          fish, 
+                                          len(players),
+                                          round - fish_eaten[player],
+                                          round_results, 
+                                          states[player])
                 if requests[player] > 3:
                     raise Exception("function requested more than three fish")
 
@@ -64,15 +70,15 @@ def run_permutation(players):
             turn += 1
 
             for player in players:
-                if fish_eaten[player] < i:
+                if fish_eaten[player] < round:
                     break
             else:
                 break
         else:
             for player in players.copy():
-                if fish_eaten[player] < i:
+                if fish_eaten[player] < round:
                     players.remove(player)
-                    scores[player] = i
+                    scores[player] = round
         if len(players) == 1:
             scores[players[0]] = 100
             players = []
