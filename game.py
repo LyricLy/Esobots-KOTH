@@ -68,7 +68,7 @@ def run_permutation(players):
             else:
                 break
         else:
-            for player in players:
+            for player in players.copy():
                 if fish_eaten[player] < i:
                     players.remove(player)
                     scores[player] = i
