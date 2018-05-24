@@ -55,4 +55,4 @@ def human_player(turn, round, fish, results, state):
     print("======")
     return int(input(">"))
 
-players = [take_two, human_player]
+players = [take_one, take_two, take_three, tit_for_tat, random_strategy, low_random, high_random, minimum_high_random, exploit_meek]
